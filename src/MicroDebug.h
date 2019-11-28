@@ -7,6 +7,8 @@
 #define TEXTIFY(A) #A
 #define ESCAPEQUOTE(A) TEXTIFY(A)
 
+#ifdef ARDUINO
+
 #ifdef ENABLE_DEBUG
 
 // Use os_printf, works but also outputs additional dubug if not using Serial
@@ -49,6 +51,29 @@
 #define DEBUG_PORT Serial
 #endif
 #define DEBUG DEBUG_PORT
+
+#else
+
+#define DEBUG_BEGIN(speed) 
+
+#ifdef ENABLE_DEBUG
+
+#define DBUGF(format, ...) printf(format "\n", ##__VA_ARGS__)
+#define DBUG(...)
+#define DBUGLN(...)
+#define DBUGVAR(...)
+
+#else
+
+#define DBUGF(...)
+#define DBUG(...)
+#define DBUGLN(...)
+#define DBUGVAR(...)
+
+#endif // DEBUG
+
+
+#endif
 
 #endif // __MICRO_DEBUG_H
  
