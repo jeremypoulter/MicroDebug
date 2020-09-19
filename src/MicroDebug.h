@@ -9,6 +9,14 @@
 
 #ifdef ARDUINO
 
+#ifndef DEBUG_USE_PRINT_P
+#if defined(ESP8266)
+#define DEBUG_USE_PRINT_P 1
+#else
+#define DEBUG_USE_PRINT_P 0
+#endif
+#endif
+
 #ifdef ENABLE_DEBUG
 
 // Use os_printf, works but also outputs additional dubug if not using Serial
@@ -18,7 +26,7 @@
 
 #define DEBUG_BEGIN(speed) DEBUG_PORT.begin(speed)
 
-#ifdef ARDUINO_ESP8266_RELEASE_2_3_0
+#if DEBUG_USE_PRINT_P
 // Serial.printf_P needs Git version of Arduino Core
 #define DBUGF(format, ...) DEBUG_PORT.printf_P(PSTR(format "\n"), ##__VA_ARGS__)
 #else
@@ -29,7 +37,7 @@
 #define DBUGLN(...) DEBUG_PORT.println(__VA_ARGS__)
 #define DBUGVAR(x, ...)                                                        \
   do {                                                                         \
-    DEBUG_PORT.print(ESCAPEQUOTE(x) " = ");                                    \
+    DEBUG_PORT.print(F(ESCAPEQUOTE(x) " = "));                                    \
     DEBUG_PORT.println(x, ##__VA_ARGS__);                                      \
   } while (false)
 
