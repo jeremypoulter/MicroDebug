@@ -37,7 +37,8 @@
 #define DBUGLN(...) DEBUG_PORT.println(__VA_ARGS__)
 #define DBUGVAR(x, ...)                                                        \
   do {                                                                         \
-    DEBUG_PORT.print(F(ESCAPEQUOTE(x) " = "));                                    \
+    DEBUG_PORT.print(F(__FUNCTION__));                                         \
+    DEBUG_PORT.print(F(": " ESCAPEQUOTE(x) " = "));                           \
     DEBUG_PORT.println(x, ##__VA_ARGS__);                                      \
   } while (false)
 
